@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +30,7 @@ export const AlbumUploadForm = ({ onSubmit, onCancel }: AlbumUploadFormProps) =>
         <Label htmlFor="albumFiles" className="text-gray-200">Audio Files *</Label>
         <Input
           id="albumFiles"
+          name="albumFiles"
           type="file"
           accept="audio/*"
           multiple
@@ -50,6 +50,7 @@ export const AlbumUploadForm = ({ onSubmit, onCancel }: AlbumUploadFormProps) =>
         <Label htmlFor="albumName" className="text-gray-200">Album Name *</Label>
         <Input
           id="albumName"
+          name="albumName"
           value={albumName}
           onChange={(e) => setAlbumName(e.target.value)}
           className="bg-gray-800 border-gray-600 text-white"
@@ -63,6 +64,7 @@ export const AlbumUploadForm = ({ onSubmit, onCancel }: AlbumUploadFormProps) =>
         <Label htmlFor="albumArtUpload" className="text-gray-200">Album Art (Optional)</Label>
         <Input
           id="albumArtUpload"
+          name="albumArtUpload"
           type="file"
           accept="image/*"
           onChange={handleAlbumArtChange}

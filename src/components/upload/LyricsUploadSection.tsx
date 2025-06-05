@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -31,6 +30,7 @@ export const LyricsUploadSection = ({
         <Label htmlFor="lyricsFile" className="text-gray-200 text-sm">Upload Lyrics File (PDF or TXT)</Label>
         <Input
           id="lyricsFile"
+          name="lyricsFile"
           type="file"
           accept=".pdf,.txt,text/plain,application/pdf"
           onChange={onLyricsFileChange}
@@ -48,6 +48,7 @@ export const LyricsUploadSection = ({
         <Label htmlFor="lyricsText" className="text-gray-200 text-sm">Or Enter Lyrics Text</Label>
         <Textarea
           id="lyricsText"
+          name="lyricsText"
           value={lyricsText}
           onChange={(e) => onLyricsTextChange(e.target.value)}
           className="bg-gray-800 border-gray-600 text-white min-h-[80px]"

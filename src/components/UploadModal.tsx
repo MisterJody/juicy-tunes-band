@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Song } from '@/pages/Index';
 import { Button } from '@/components/ui/button';
@@ -67,12 +66,6 @@ export const UploadModal = ({ onClose, onUpload }: UploadModalProps) => {
       const audioFileName = `${Date.now()}-${audioFile.name}`;
       const audioUrl = await uploadFileToStorage(audioFile, 'audio-files', audioFileName);
 
-      if (!audioUrl) {
-        alert('Failed to upload audio file');
-        setIsLoading(false);
-        return;
-      }
-
       // Upload album art if provided
       let albumArtUrl = 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=300&h=300&fit=crop';
       
@@ -106,7 +99,7 @@ export const UploadModal = ({ onClose, onUpload }: UploadModalProps) => {
       onClose();
     } catch (error) {
       console.error('Error uploading song:', error);
-      alert('Error uploading song. Please try again.');
+      alert(error instanceof Error ? error.message : 'Error uploading song. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -114,8 +107,13 @@ export const UploadModal = ({ onClose, onUpload }: UploadModalProps) => {
 
   const handleAlbumSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await uploadAlbum(onUpload);
-    onClose();
+    try {
+      await uploadAlbum(onUpload);
+      onClose();
+    } catch (error) {
+      console.error('Error uploading album:', error);
+      alert(error instanceof Error ? error.message : 'Error uploading album. Please try again.');
+    }
   };
 
   return (

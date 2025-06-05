@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Upload } from 'lucide-react';
 import { LyricsUploadSection } from './LyricsUploadSection';
 import { useUploadForm } from '@/hooks/useUploadForm';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { Song } from '@/pages/Index';
 
 const keys = [
   'C Major', 'C Minor', 'C# Major', 'C# Minor', 'D Major', 'D Minor',
@@ -20,8 +22,9 @@ interface SingleSongFormProps {
   lyricsFile: File | null;
   onLyricsTextChange: (text: string) => void;
   onLyricsFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit: (song: Omit<Song, 'id'>) => void;
   onCancel: () => void;
+  isLoading?: boolean;
 }
 
 export const SingleSongForm = ({
@@ -30,7 +33,8 @@ export const SingleSongForm = ({
   onLyricsTextChange,
   onLyricsFileChange,
   onSubmit,
-  onCancel
+  onCancel,
+  isLoading
 }: SingleSongFormProps) => {
   const {
     title,
@@ -39,120 +43,149 @@ export const SingleSongForm = ({
     setAlbum,
     duration,
     setDuration,
+    audioFile,
+    albumArtFile,
     albumArtPreview,
     key,
     setKey,
     tempo,
     setTempo,
-    isLoading,
     handleAudioFileChange,
-    handleAlbumArtChange
+    handleAlbumArtChange,
+    getFormData,
+    error
   } = useUploadForm();
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(getFormData());
+  };
+
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="audioFile" className="text-gray-200">Audio File *</Label>
-        <Input
-          id="audioFile"
-          type="file"
-          accept="audio/*"
-          onChange={handleAudioFileChange}
-          className="bg-gray-800 border-gray-600 text-white"
-          required
-          disabled={isLoading}
-        />
-        {isLoading && <p className="text-orange-400 text-sm mt-1">Reading file metadata...</p>}
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
-      <div>
-        <Label htmlFor="title" className="text-gray-200">Song Title *</Label>
-        <Input
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="bg-gray-800 border-gray-600 text-white"
-          placeholder="Enter song title"
-          required
-          disabled={isLoading}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="album" className="text-gray-200">Album *</Label>
-        <Input
-          id="album"
-          value={album}
-          onChange={(e) => setAlbum(e.target.value)}
-          className="bg-gray-800 border-gray-600 text-white"
-          placeholder="Enter album name"
-          required
-          disabled={isLoading}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="duration" className="text-gray-200">Duration *</Label>
-        <Input
-          id="duration"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          className="bg-gray-800 border-gray-600 text-white"
-          placeholder="e.g., 3:45"
-          required
-          disabled={isLoading}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="key" className="text-gray-200">Key (Optional)</Label>
-          <Select value={key} onValueChange={setKey} disabled={isLoading}>
-            <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
-              <SelectValue placeholder="Select key" />
-            </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-600">
-              <SelectItem value="none" className="text-white hover:bg-gray-700">Auto-detect after upload</SelectItem>
-              {keys.map((keyOption) => (
-                <SelectItem key={keyOption} value={keyOption} className="text-white hover:bg-gray-700">
-                  {keyOption}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="audioFile">Audio File</Label>
+          <div className="flex items-center gap-4">
+            <Input
+              id="audioFile"
+              name="audioFile"
+              type="file"
+              accept="audio/*"
+              onChange={handleAudioFileChange}
+              className="hidden"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => document.getElementById('audioFile')?.click()}
+              className="w-full"
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              {audioFile ? audioFile.name : 'Select Audio File'}
+            </Button>
+          </div>
         </div>
 
-        <div>
-          <Label htmlFor="tempo" className="text-gray-200">Tempo (BPM, Optional)</Label>
+        <div className="space-y-2">
+          <Label htmlFor="albumArt">Album Art</Label>
+          <div className="flex items-center gap-4">
+            <Input
+              id="albumArt"
+              name="albumArt"
+              type="file"
+              accept="image/*"
+              onChange={handleAlbumArtChange}
+              className="hidden"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => document.getElementById('albumArt')?.click()}
+              className="w-full"
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              {albumArtFile ? albumArtFile.name : 'Select Album Art'}
+            </Button>
+          </div>
+          {albumArtPreview && (
+            <img
+              src={albumArtPreview}
+              alt="Album art preview"
+              className="mt-2 h-32 w-32 object-cover rounded-lg"
+            />
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="title">Title</Label>
           <Input
-            id="tempo"
-            type="number"
-            value={tempo}
-            onChange={(e) => setTempo(e.target.value)}
-            className="bg-gray-800 border-gray-600 text-white"
-            placeholder="Auto-detect after upload"
-            min="40"
-            max="200"
-            disabled={isLoading}
+            id="title"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter song title"
+            required
           />
         </div>
-      </div>
 
-      <div>
-        <Label htmlFor="albumArtFile" className="text-gray-200">Album Art (Optional)</Label>
-        <Input
-          id="albumArtFile"
-          type="file"
-          accept="image/*"
-          onChange={handleAlbumArtChange}
-          className="bg-gray-800 border-gray-600 text-white"
-          disabled={isLoading}
-        />
-        {albumArtPreview && (
-          <div className="mt-2">
-            <img src={albumArtPreview} alt="Album art preview" className="w-20 h-20 rounded object-cover" />
+        <div className="space-y-2">
+          <Label htmlFor="album">Album</Label>
+          <Input
+            id="album"
+            name="album"
+            value={album}
+            onChange={(e) => setAlbum(e.target.value)}
+            placeholder="Enter album name"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="key">Key</Label>
+            <Select value={key} onValueChange={setKey}>
+              <SelectTrigger id="key" name="key">
+                <SelectValue placeholder="Select key" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">None</SelectItem>
+                <SelectItem value="C">C</SelectItem>
+                <SelectItem value="C#">C#</SelectItem>
+                <SelectItem value="D">D</SelectItem>
+                <SelectItem value="D#">D#</SelectItem>
+                <SelectItem value="E">E</SelectItem>
+                <SelectItem value="F">F</SelectItem>
+                <SelectItem value="F#">F#</SelectItem>
+                <SelectItem value="G">G</SelectItem>
+                <SelectItem value="G#">G#</SelectItem>
+                <SelectItem value="A">A</SelectItem>
+                <SelectItem value="A#">A#</SelectItem>
+                <SelectItem value="B">B</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-        )}
+
+          <div className="space-y-2">
+            <Label htmlFor="tempo">Tempo (BPM)</Label>
+            <Input
+              id="tempo"
+              name="tempo"
+              type="number"
+              value={tempo}
+              onChange={(e) => setTempo(e.target.value)}
+              placeholder="Enter tempo"
+              min="0"
+              max="300"
+            />
+          </div>
+        </div>
       </div>
 
       <LyricsUploadSection
@@ -180,7 +213,7 @@ export const SingleSongForm = ({
         </Button>
         <Button
           type="submit"
-          disabled={isLoading}
+          disabled={isLoading || !audioFile}
           className="flex-1 bg-green-500 hover:bg-green-600 text-white"
         >
           <Upload className="w-4 h-4 mr-2" />

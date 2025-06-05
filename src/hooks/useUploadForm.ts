@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Song } from '@/pages/Index';
 import { formatDuration } from '@/utils/audioAnalysis';
@@ -13,11 +12,28 @@ export const useUploadForm = () => {
   const [key, setKey] = useState('none');
   const [tempo, setTempo] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleAudioFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      setError('Please select an audio file');
+      return;
+    }
 
+    // Validate file type
+    if (!file.type.startsWith('audio/')) {
+      setError('Please select a valid audio file');
+      return;
+    }
+
+    // Validate file size (50MB limit)
+    if (file.size > 50 * 1024 * 1024) {
+      setError('File size must be less than 50MB');
+      return;
+    }
+
+    setError(null);
     setIsLoading(true);
     setAudioFile(file);
 
@@ -27,7 +43,7 @@ export const useUploadForm = () => {
       const fileUrl = URL.createObjectURL(file);
       audio.src = fileUrl;
 
-      audio.addEventListener('loadedmetadata', async () => {
+      audio.addEventListener('loadedmetadata', () => {
         if (audio.duration && !isNaN(audio.duration)) {
           setDuration(formatDuration(audio.duration));
         }
@@ -38,37 +54,18 @@ export const useUploadForm = () => {
         }
 
         URL.revokeObjectURL(fileUrl);
+        setIsLoading(false);
       });
 
-      // Try to parse metadata if music-metadata-browser is available
-      try {
-        const { parseBuffer } = await import('music-metadata-browser');
-        const arrayBuffer = await file.arrayBuffer();
-        const metadata = await parseBuffer(new Uint8Array(arrayBuffer), file.type);
-
-        if (metadata.common.title && !title) setTitle(metadata.common.title);
-        if (metadata.common.album && !album) setAlbum(metadata.common.album);
-        if (metadata.format.duration && !duration) setDuration(formatDuration(metadata.format.duration));
-
-        if (metadata.common.picture && metadata.common.picture.length > 0) {
-          const picture = metadata.common.picture[0];
-          const blob = new Blob([picture.data], { type: picture.format });
-          const imageUrl = URL.createObjectURL(blob);
-          setAlbumArtPreview(imageUrl);
-          
-          // Create a File object from the blob for upload
-          const artFile = new File([blob], 'album-art.jpg', { type: picture.format });
-          setAlbumArtFile(artFile);
-        }
-
-        console.log('Extracted metadata:', metadata);
-      } catch (metadataError) {
-        console.log('Music metadata parsing not available or failed:', metadataError);
-      }
+      audio.addEventListener('error', () => {
+        console.error('Error loading audio file');
+        setError('Error loading audio file. Please try another file.');
+        setIsLoading(false);
+      });
 
     } catch (error) {
       console.error('Error reading audio file:', error);
-    } finally {
+      setError('Error reading audio file. Please try another file.');
       setIsLoading(false);
     }
   };
@@ -77,6 +74,19 @@ export const useUploadForm = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file');
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size must be less than 5MB');
+      return;
+    }
+
+    setError(null);
     setAlbumArtFile(file);
     const imageUrl = URL.createObjectURL(file);
     setAlbumArtPreview(imageUrl);
@@ -110,6 +120,8 @@ export const useUploadForm = () => {
     setTempo,
     isLoading,
     setIsLoading,
+    error,
+    setError,
     handleAudioFileChange,
     handleAlbumArtChange,
     getFormData

@@ -61,6 +61,7 @@ export const CreateSetlistModal = ({ onClose, onCreateSetlist }: CreateSetlistMo
             <Label htmlFor="name" className="text-white">Setlist Name *</Label>
             <Input
               id="name"
+              name="name"
               value={formData.name}
               onChange={(e) => handleChange('name', e.target.value)}
               placeholder="Enter setlist name"
@@ -73,6 +74,7 @@ export const CreateSetlistModal = ({ onClose, onCreateSetlist }: CreateSetlistMo
             <Label htmlFor="gig_name" className="text-white">Gig Name</Label>
             <Input
               id="gig_name"
+              name="gig_name"
               value={formData.gig_name}
               onChange={(e) => handleChange('gig_name', e.target.value)}
               placeholder="Enter gig name (optional)"
@@ -84,6 +86,7 @@ export const CreateSetlistModal = ({ onClose, onCreateSetlist }: CreateSetlistMo
             <Label htmlFor="gig_date" className="text-white">Gig Date</Label>
             <Input
               id="gig_date"
+              name="gig_date"
               type="date"
               value={formData.gig_date}
               onChange={(e) => handleChange('gig_date', e.target.value)}
@@ -95,6 +98,7 @@ export const CreateSetlistModal = ({ onClose, onCreateSetlist }: CreateSetlistMo
             <Label htmlFor="description" className="text-white">Description</Label>
             <Textarea
               id="description"
+              name="description"
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
               placeholder="Add notes about this setlist (optional)"

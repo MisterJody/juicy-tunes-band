@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Song } from '@/pages/Index';
 import { Button } from '@/components/ui/button';
@@ -133,6 +132,7 @@ export const EditSongModal = ({ song, onClose, onSave }: EditSongModalProps) => 
             <Label htmlFor="title" className="text-gray-200">Song Title *</Label>
             <Input
               id="title"
+              name="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="bg-gray-800 border-gray-600 text-white"
@@ -146,6 +146,7 @@ export const EditSongModal = ({ song, onClose, onSave }: EditSongModalProps) => 
             <Label htmlFor="album" className="text-gray-200">Album *</Label>
             <Input
               id="album"
+              name="album"
               value={album}
               onChange={(e) => setAlbum(e.target.value)}
               className="bg-gray-800 border-gray-600 text-white"
@@ -177,6 +178,7 @@ export const EditSongModal = ({ song, onClose, onSave }: EditSongModalProps) => 
               <Label htmlFor="tempo" className="text-gray-200">Tempo (BPM) (Optional)</Label>
               <Input
                 id="tempo"
+                name="tempo"
                 type="number"
                 value={tempo}
                 onChange={(e) => setTempo(e.target.value)}
@@ -193,6 +195,7 @@ export const EditSongModal = ({ song, onClose, onSave }: EditSongModalProps) => 
             <Label htmlFor="duration" className="text-gray-200">Duration *</Label>
             <Input
               id="duration"
+              name="duration"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
               className="bg-gray-800 border-gray-600 text-white"
