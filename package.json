@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "vite_react_shadcn_ts",
   "private": true,
   "version": "0.0.0",
@@ -90,3 +91,15 @@
     "vite": "^5.4.1"
   }
 }
+=======
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0"
+  }
+}
+"scripts": {
+  "dev": "vite",
+  "build": "tsc && vite build",
+  "build:dev": "vite build --mode development",
+  "preview": "vite preview"
+}
+>>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
