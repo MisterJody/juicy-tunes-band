@@ -3,7 +3,7 @@ import { applyLowPassFilter } from './audioUtils';
 
 // Enhanced key detection using full spectrum analysis
 export async function detectKeyFromBassline(audioBuffer: AudioBuffer): Promise<string> {
-  const data = audioBuffer.getChannelData(0);
+  const data = audioBuffer.getChannelData();
   const sampleRate = audioBuffer.sampleRate;
   
   // Use middle section for analysis (avoid intro/outro)

@@ -1,7 +1,7 @@
 
 // Improved tempo detection focusing on beat patterns and onset detection
 export async function detectTempoFromBeats(audioBuffer: AudioBuffer): Promise<number> {
-  const data = audioBuffer.getChannelData(0);
+  const data = audioBuffer.getChannelData();
   const sampleRate = audioBuffer.sampleRate;
   
   console.log('Tempo analysis: Processing', data.length, 'samples at', sampleRate, 'Hz');

@@ -64,7 +64,7 @@ export const useEssentiaProcessor = () => {
       });
       
       // Convert to mono and get audio data
-      const audioData = audioBuffer.getChannelData(0);
+      const audioData = audioBuffer.getChannelData();
       
       // Use a smaller sample for analysis to avoid memory issues
       const maxSamples = audioBuffer.sampleRate * 30; // 30 seconds max

@@ -32,7 +32,7 @@ export const useSimpleAudioProcessor = () => {
       
       // Use only first 10 seconds for faster analysis
       const analysisLength = Math.min(audioBuffer.length, audioBuffer.sampleRate * 10);
-      const audioData = audioBuffer.getChannelData(0).slice(0, analysisLength);
+      const audioData = audioBuffer.getChannelData().slice(0, analysisLength);
       
       console.log('=== Starting fast tempo detection ===');
       const tempo = await detectTempoFast(audioData, audioBuffer.sampleRate);

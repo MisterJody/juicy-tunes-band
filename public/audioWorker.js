@@ -5,7 +5,7 @@
 // Create a mock audio buffer object for analysis functions
 function createMockAudioBuffer(audioData, sampleRate, duration, numberOfChannels) {
   return {
-    getChannelData: (channel) => {
+    getChannelData: () => {
       return audioData;
     },
     sampleRate: sampleRate,
@@ -16,7 +16,7 @@ function createMockAudioBuffer(audioData, sampleRate, duration, numberOfChannels
 
 // Real tempo detection with actual audio analysis
 async function detectTempo(audioBuffer) {
-  const data = audioBuffer.getChannelData(0);
+  const data = audioBuffer.getChannelData();
   const sampleRate = audioBuffer.sampleRate;
   
   console.log('Worker: Starting real tempo analysis for unique file...');
@@ -216,7 +216,7 @@ function autocorrelationTempo(data, sampleRate, avgEnergy) {
 
 // Real key detection with harmonic analysis
 async function detectKey(audioBuffer) {
-  const data = audioBuffer.getChannelData(0);
+  const data = audioBuffer.getChannelData();
   const sampleRate = audioBuffer.sampleRate;
   
   console.log('Worker: Starting harmonic key analysis...');

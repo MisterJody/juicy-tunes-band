@@ -1,7 +1,7 @@
 
 // Improved key detection using harmonic analysis
 export async function detectKey(audioBuffer: AudioBuffer): Promise<string> {
-  const data = audioBuffer.getChannelData(0);
+  const data = audioBuffer.getChannelData();
   const sampleRate = audioBuffer.sampleRate;
   
   console.log('Starting improved key analysis...');

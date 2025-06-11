@@ -33,7 +33,7 @@ export const useMeydaProcessor = () => {
       
       // Use first 30 seconds for analysis
       const analysisLength = Math.min(audioBuffer.length, audioBuffer.sampleRate * 30);
-      const audioData = audioBuffer.getChannelData(0).slice(0, analysisLength);
+      const audioData = audioBuffer.getChannelData().slice(0, analysisLength);
       
       console.log('=== Starting Meyda analysis ===');
       

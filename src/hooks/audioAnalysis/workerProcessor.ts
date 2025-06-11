@@ -117,7 +117,7 @@ async function analyzeWithWorker(audioBuffer: AudioBuffer, songId: string): Prom
       };
       
       // Send audio data to worker
-      const audioData = audioBuffer.getChannelData(0);
+      const audioData = audioBuffer.getChannelData();
       
       console.log('Sending data to worker:', {
         samples: audioData.length,

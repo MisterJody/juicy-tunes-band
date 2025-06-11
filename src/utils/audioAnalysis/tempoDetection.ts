@@ -1,7 +1,7 @@
 
 // Improved tempo detection using spectral flux and autocorrelation
 export async function detectTempo(audioBuffer: AudioBuffer): Promise<number> {
-  const data = audioBuffer.getChannelData(0);
+  const data = audioBuffer.getChannelData();
   const sampleRate = audioBuffer.sampleRate;
   
   console.log('Starting improved tempo analysis...');

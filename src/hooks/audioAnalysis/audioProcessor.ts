@@ -32,7 +32,7 @@ export const useAudioProcessor = () => {
       });
       
       // Extract audio data for the worker
-      const audioData = audioBuffer.getChannelData(0);
+      const audioData = audioBuffer.getChannelData();
       const audioDataArray = new Float32Array(audioData);
       
       // Create Web Worker for analysis
