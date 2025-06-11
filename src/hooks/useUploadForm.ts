@@ -4,6 +4,7 @@ import { formatDuration } from '@/utils/audioAnalysis';
 
 export const useUploadForm = () => {
   const [title, setTitle] = useState('');
+  const [artist, setArtist] = useState('TheBandJuicy'); // Set default artist
   const [album, setAlbum] = useState('');
   const [duration, setDuration] = useState('');
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -37,35 +38,62 @@ export const useUploadForm = () => {
     setIsLoading(true);
     setAudioFile(file);
 
+    // Immediately set the title from filename if empty
+    if (!title) {
+      const filename = file.name.replace(/\.[^/.]+$/, '');
+      const cleanTitle = filename
+        .replace(/[-_]/g, ' ')
+        .replace(/\b\w/g, l => l.toUpperCase());
+      setTitle(cleanTitle);
+      console.log('Set title from filename:', cleanTitle);
+    }
+
     try {
       // Create audio element to get duration
       const audio = document.createElement('audio');
       const fileUrl = URL.createObjectURL(file);
       audio.src = fileUrl;
+      audio.preload = 'metadata';
 
-      audio.addEventListener('loadedmetadata', () => {
-        if (audio.duration && !isNaN(audio.duration)) {
-          setDuration(formatDuration(audio.duration));
-        }
-        
-        if (!title) {
-          const filename = file.name.replace(/\.[^/.]+$/, '');
-          setTitle(filename);
-        }
+      const loadMetadata = new Promise((resolve, reject) => {
+        audio.addEventListener('loadedmetadata', () => {
+          console.log('Audio metadata loaded, duration:', audio.duration);
+          if (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+            const formattedDuration = formatDuration(audio.duration);
+            setDuration(formattedDuration);
+            console.log('Set duration:', formattedDuration);
+          } else {
+            console.log('Could not determine duration, setting default');
+            setDuration('0:00');
+          }
+          URL.revokeObjectURL(fileUrl);
+          resolve(true);
+        });
 
-        URL.revokeObjectURL(fileUrl);
-        setIsLoading(false);
+        audio.addEventListener('error', (e) => {
+          console.error('Error loading audio metadata:', e);
+          URL.revokeObjectURL(fileUrl);
+          reject(e);
+        });
+
+        // Fallback timeout
+        setTimeout(() => {
+          console.log('Metadata loading timeout, using defaults');
+          if (!duration) setDuration('0:00');
+          URL.revokeObjectURL(fileUrl);
+          resolve(true);
+        }, 5000);
       });
 
-      audio.addEventListener('error', () => {
-        console.error('Error loading audio file');
-        setError('Error loading audio file. Please try another file.');
-        setIsLoading(false);
-      });
+      // Load the audio metadata
+      audio.load();
+      await loadMetadata;
 
     } catch (error) {
       console.error('Error reading audio file:', error);
-      setError('Error reading audio file. Please try another file.');
+      // Set defaults on error
+      if (!duration) setDuration('0:00');
+    } finally {
       setIsLoading(false);
     }
   };
@@ -94,7 +122,7 @@ export const useUploadForm = () => {
 
   const getFormData = (): Omit<Song, 'id'> => ({
     title,
-    artist: 'TheBandJuicy',
+    artist,
     album,
     duration,
     albumArt: albumArtPreview || 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=300&h=300&fit=crop',
@@ -107,6 +135,8 @@ export const useUploadForm = () => {
   return {
     title,
     setTitle,
+    artist,
+    setArtist,
     album,
     setAlbum,
     duration,

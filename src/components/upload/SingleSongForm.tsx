@@ -39,6 +39,8 @@ export const SingleSongForm = ({
   const {
     title,
     setTitle,
+    artist,
+    setArtist,
     album,
     setAlbum,
     duration,
@@ -50,6 +52,7 @@ export const SingleSongForm = ({
     setKey,
     tempo,
     setTempo,
+    isLoading: formLoading,
     handleAudioFileChange,
     handleAlbumArtChange,
     getFormData,
@@ -137,6 +140,18 @@ export const SingleSongForm = ({
         </div>
 
         <div className="space-y-2">
+          <Label htmlFor="artist">Artist</Label>
+          <Input
+            id="artist"
+            name="artist"
+            value={artist}
+            onChange={(e) => setArtist(e.target.value)}
+            placeholder="Enter artist name"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="album">Album</Label>
           <Input
             id="album"
@@ -144,6 +159,19 @@ export const SingleSongForm = ({
             value={album}
             onChange={(e) => setAlbum(e.target.value)}
             placeholder="Enter album name"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="duration">Duration</Label>
+          <Input
+            id="duration"
+            name="duration"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            placeholder="Duration (auto-detected)"
+            readOnly
+            className="bg-gray-800 text-gray-300"
           />
         </div>
 
