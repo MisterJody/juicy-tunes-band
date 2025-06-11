@@ -9,7 +9,162 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          display_name: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+      setlist_songs: {
+        Row: {
+          created_at: string | null
+          id: string
+          notes: string | null
+          position: number
+          set_number: number | null
+          setlist_id: string | null
+          song_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          position: number
+          set_number?: number | null
+          setlist_id?: string | null
+          song_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          position?: number
+          set_number?: number | null
+          setlist_id?: string | null
+          song_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "setlist_songs_setlist_id_fkey"
+            columns: ["setlist_id"]
+            isOneToOne: false
+            referencedRelation: "setlists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "setlist_songs_song_id_fkey"
+            columns: ["song_id"]
+            isOneToOne: false
+            referencedRelation: "songs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      setlists: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          gig_date: string | null
+          gig_name: string | null
+          id: string
+          name: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          gig_date?: string | null
+          gig_name?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          gig_date?: string | null
+          gig_name?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      songs: {
+        Row: {
+          album: string
+          album_art_url: string | null
+          artist: string
+          audio_file_url: string | null
+          duration: string
+          has_lyrics: boolean | null
+          id: string
+          lyrics_file_url: string | null
+          lyrics_text: string | null
+          song_key: string | null
+          tempo: number | null
+          title: string
+          upload_date: string | null
+          user_id: string | null
+        }
+        Insert: {
+          album: string
+          album_art_url?: string | null
+          artist: string
+          audio_file_url?: string | null
+          duration: string
+          has_lyrics?: boolean | null
+          id?: string
+          lyrics_file_url?: string | null
+          lyrics_text?: string | null
+          song_key?: string | null
+          tempo?: number | null
+          title: string
+          upload_date?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          album?: string
+          album_art_url?: string | null
+          artist?: string
+          audio_file_url?: string | null
+          duration?: string
+          has_lyrics?: boolean | null
+          id?: string
+          lyrics_file_url?: string | null
+          lyrics_text?: string | null
+          song_key?: string | null
+          tempo?: number | null
+          title?: string
+          upload_date?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
