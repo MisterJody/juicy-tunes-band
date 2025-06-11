@@ -9,23 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-<<<<<<< HEAD
-      Juicybandapp: {
-        Row: {
-          created_at: string
-          id: number
-          Nummers: number | null
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          Nummers?: number | null
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          Nummers?: number | null
-=======
       profiles: {
         Row: {
           avatar_url: string | null
@@ -50,39 +33,11 @@ export type Database = {
           id?: string
           updated_at?: string | null
           username?: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
         }
         Relationships: []
       }
       setlist_songs: {
         Row: {
-<<<<<<< HEAD
-          created_at: string
-          id: string
-          notes: string | null
-          position: number
-          set_number: number
-          setlist_id: string
-          song_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          notes?: string | null
-          position: number
-          set_number?: number
-          setlist_id: string
-          song_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          notes?: string | null
-          position?: number
-          set_number?: number
-          setlist_id?: string
-          song_id?: string
-=======
           created_at: string | null
           id: string
           notes: string | null
@@ -108,7 +63,6 @@ export type Database = {
           set_number?: number | null
           setlist_id?: string | null
           song_id?: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
         }
         Relationships: [
           {
@@ -129,56 +83,34 @@ export type Database = {
       }
       setlists: {
         Row: {
-<<<<<<< HEAD
-          created_at: string
-=======
           created_at: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
           description: string | null
           gig_date: string | null
           gig_name: string | null
           id: string
           name: string
-<<<<<<< HEAD
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-=======
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
           description?: string | null
           gig_date?: string | null
           gig_name?: string | null
           id?: string
           name: string
-<<<<<<< HEAD
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-=======
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
           description?: string | null
           gig_date?: string | null
           gig_name?: string | null
           id?: string
           name?: string
-<<<<<<< HEAD
-          updated_at?: string
-=======
           updated_at?: string | null
           user_id?: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
         }
         Relationships: []
       }
@@ -196,12 +128,8 @@ export type Database = {
           song_key: string | null
           tempo: number | null
           title: string
-<<<<<<< HEAD
-          upload_date: string
-=======
           upload_date: string | null
           user_id: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
         }
         Insert: {
           album: string
@@ -216,12 +144,8 @@ export type Database = {
           song_key?: string | null
           tempo?: number | null
           title: string
-<<<<<<< HEAD
-          upload_date?: string
-=======
           upload_date?: string | null
           user_id?: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
         }
         Update: {
           album?: string
@@ -236,12 +160,8 @@ export type Database = {
           song_key?: string | null
           tempo?: number | null
           title?: string
-<<<<<<< HEAD
-          upload_date?: string
-=======
           upload_date?: string | null
           user_id?: string | null
->>>>>>> 69b730849c5f7566b18c637629089ebfdefbcce6
         }
         Relationships: []
       }
